@@ -56,7 +56,7 @@ class LoginScreen extends StatelessWidget {
 
                       errorMessage = '';
                     } else {
-                      // Yanlış giriş
+                      
                       errorMessage = 'E-posta veya şifre hatalı';
                     }
 
