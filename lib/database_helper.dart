@@ -36,7 +36,7 @@ class DatabaseHelper {
     await db.insert(
       'users',
       {'name': name, 'email': email, 'password': password},
-      conflictAlgorithm: ConflictAlgorithm.replace,
+      conflictAlgorithm: ConflictAlgorithm.abort,
     );
   }
 
