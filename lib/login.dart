@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'Task/todo_list.dart';
 import 'register.dart';
 import 'database_helper.dart';
 
@@ -54,7 +55,7 @@ class LoginScreen extends StatelessWidget {
 
                     if (isValidUser) {
 
-                      errorMessage = '';
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => TodoList()));
                     } else {
                       // Yanlış giriş
                       errorMessage = 'E-posta veya şifre hatalı';
