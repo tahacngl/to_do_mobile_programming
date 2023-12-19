@@ -57,7 +57,7 @@ class LoginScreen extends StatelessWidget {
 
                       Navigator.of(context).push(MaterialPageRoute(builder: (context) => TodoList()));
                     } else {
-                      // Yanlış giriş
+                      
                       errorMessage = 'E-posta veya şifre hatalı';
                     }
 
