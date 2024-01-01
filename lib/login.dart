@@ -16,7 +16,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Giriş Yap'),
+        title: Center(child: Text("ToDo List")),
       ),
       body: Center(
         child: Padding(
@@ -54,17 +54,13 @@ class LoginScreen extends StatelessWidget {
                     final isValidUser = await dbHelper.checkUserCredentials(enteredEmail, enteredPassword);
 
                     if (isValidUser) {
-
                       Navigator.of(context).push(MaterialPageRoute(builder: (context) => TodoList()));
                     } else {
-                      
                       errorMessage = 'E-posta veya şifre hatalı';
                     }
-
                   } catch (e) {
                     errorMessage = 'Veritabanı hatası: $e';
                   }
-
 
                   (context as Element).markNeedsBuild();
                 },
@@ -78,7 +74,6 @@ class LoginScreen extends StatelessWidget {
               SizedBox(height: 8),
               TextButton(
                 onPressed: () {
-
                   Navigator.push(
                     context,
                     MaterialPageRoute(

@@ -1,237 +1,166 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
-import 'package:to_do_mobile_programming/Task/model/todo.dart';
-import 'package:to_do_mobile_programming/database_helper.dart';
-
-// class TodoAdd extends StatefulWidget {
-//   @override
-//   State<StatefulWidget> createState() {
-//     // TODO: implement createState
-//     return TodoAddState();
-//   }
-// }
-//
-// class TodoAddState extends State {
-//   var dbHelper=DatabaseHelper();
-//   var txtName=TextEditingController();
-//   var txtDescription=TextEditingController();
-//   var txtDate=TextEditingController();
-//   var txtPriority=TextEditingController();
-//
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text("EKleme"),
-//       ),
-//       body: Padding(
-//         padding: EdgeInsets.all(35),
-//         child: Column(
-//           children: <Widget>[
-//             buildNameField(),
-//             buildDescriptionField(),
-//             buildDateField(),
-//             builPriorityField(),
-//             buildSaveButton(),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-//
-//   buildNameField() {
-//     return TextField(
-//       decoration: InputDecoration(labelText: "isim"),
-//       controller:txtName ,
-//     );
-//   }
-//
-//   buildDescriptionField() { return TextField(
-//     decoration: InputDecoration(labelText: "detay"),
-//     controller:txtDescription ,
-//   );}
-//
-//   buildDateField() { return TextField(
-//     decoration: InputDecoration(labelText: "tarihh"),
-//     controller:txtDate ,
-//   );}
-//
-//   builPriorityField() { return TextField(
-//     decoration: InputDecoration(labelText: "öncelik sırası"),
-//     controller:txtPriority ,
-//   );}
-//
-//   buildSaveButton() {
-//     return FloatingActionButton(
-//       child: Icon(Icons.add),
-//         tooltip: "Ekle",
-//
-//         onPressed: (){
-//       addTodo();
-//
-//     }
-//     );
-//
-//   }
-//
-
-
+import 'package:intl/intl.dart';
+import 'package:to_do_mobile_programming/task/model/todo.dart';
+import 'package:to_do_mobile_programming/todo_database.dart';
 
 class TodoAdd extends StatefulWidget {
-
-  // Passing function as parameter
-
   @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return TodoAddState();
-  }
+  _TodoAddState createState() => _TodoAddState();
 }
 
-class TodoAddState extends State {
-  var dbHelper=DatabaseHelper();
+class _TodoAddState extends State<TodoAdd> {
+  late DatabaseHelper dbHelper;
+
   var titleController = TextEditingController();
   var descriptionController = TextEditingController();
-  var dateController = TextEditingController();
-  var timeController = TextEditingController();
-  var txtPriority=TextEditingController();
+  late DateTime selectedDate = DateTime.now();
+  late TimeOfDay selectedTime = TimeOfDay.now();
+  int selectedPriority = 1;
 
+  Widget buildTextField(String labelText, TextEditingController controller) {
+    return TextField(
+      decoration: InputDecoration(labelText: labelText),
+      controller: controller,
+    );
+  }
 
-
+  @override
+  void initState() {
+    super.initState();
+    dbHelper = DatabaseHelper();
+  }
 
   @override
   Widget build(BuildContext context) {
-    double deviceHeight = MediaQuery.of(context).size.height;
-    double deviceWidth = MediaQuery.of(context).size.width;
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Yeni görev ekleme"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            buildTextField("Başlık", titleController),
+            buildTextField("Açıklama", descriptionController),
+            buildDateField(),
+            buildTimeField(),
+            buildPriorityDropdown(),
+            ElevatedButton(
+              onPressed: () async {
+                await addTodo();
+                Navigator.pop(context, true);
+              },
+              child: Text("Kaydet"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                width: deviceWidth,
-                height: deviceHeight / 10,
-                decoration: const BoxDecoration(
-                  color: Colors.purple,
+  Widget buildDateField() {
+    return GestureDetector(
+      onTap: () async {
+        var pickedDate = await showDatePicker(
+          context: context,
+          initialDate: selectedDate,
+          firstDate: DateTime(2000),
+          lastDate: DateTime(2101),
+        );
 
-                ),
-                child: Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      icon: const Icon(
-                        Icons.close,
-                        size: 40,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const Expanded(
-                      child: Text(
-                        "Add new task",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 21),
-                        textAlign: TextAlign.center,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              const Padding(
-                  padding: EdgeInsets.only(top: 10), child: Text("Task title")),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
-                child: TextField(
-                  controller: titleController,
-                  decoration: const InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
-                ),
-              ),
-
-
-              const Padding(
-                padding: EdgeInsets.only(top: 10),
-                child: Text("Description"),
-              ),
-              SizedBox(
-                height: 300,
-                child: TextField(
-                  controller: descriptionController,
-                  expands: true,
-                  maxLines: null,
-                  decoration: const InputDecoration(
-                      filled: true, fillColor: Colors.white, isDense: true),
-                ),
-              ),
-              const Padding(
-                  padding: EdgeInsets.only(top: 10), child: Text("priority")),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
-                child: TextField(
-                  controller: txtPriority,
-                  decoration: const InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        children: [
-                          const Text("Date"),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: TextField(
-                              controller: dateController,
-                              decoration: const InputDecoration(
-                                filled: true,
-                                fillColor: Colors.white,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-
-                  ],
-                ),
-              ),
-
-
-              ElevatedButton(
-
-
-                  onPressed: () {
-
-                    addTodo();
-                  },
-                  child: const Text("Save"))
-            ],
+        if (pickedDate != null) {
+          setState(() {
+            selectedDate = pickedDate;
+          });
+        }
+      },
+      child: AbsorbPointer(
+        child: buildTextField(
+          "Tarih",
+          TextEditingController(
+            text: DateFormat('yyyy-MM-dd').format(selectedDate),
           ),
         ),
       ),
     );
   }
-  void addTodo() async {
-    var result= await dbHelper.insertTodo(Todo(title: titleController.text,description: descriptionController.text,date :dateController.text,priority:txtPriority.text));
-    Navigator.pop(context,true);
+
+  Widget buildTimeField() {
+    return GestureDetector(
+      onTap: () async {
+        var pickedTime = await showTimePicker(
+          context: context,
+          initialTime: selectedTime,
+        );
+
+        if (pickedTime != null) {
+          setState(() {
+            selectedTime = pickedTime;
+          });
+        }
+      },
+      child: AbsorbPointer(
+        child: buildTextField(
+          "Saat",
+          TextEditingController(
+            text: selectedTime.format(context),
+          ),
+        ),
+      ),
+    );
   }
 
+  Widget buildPriorityDropdown() {
+    return DropdownButtonFormField<int>(
+      value: selectedPriority,
+      onChanged: (value) {
+        setState(() {
+          selectedPriority = value!;
+        });
+      },
+      items: [
+        DropdownMenuItem(
+          value: 1,
+          child: Text("Yüksek"),
+        ),
+        DropdownMenuItem(
+          value: 2,
+          child: Text("Orta"),
+        ),
+        DropdownMenuItem(
+          value: 3,
+          child: Text("Düşük"),
+        ),
+      ],
+      decoration: InputDecoration(labelText: "Öncelik"),
+    );
+  }
+
+  Future<void> addTodo() async {
+    var title = titleController.text.trim();
+    var description = descriptionController.text.trim();
+
+    if (title.isEmpty || description.isEmpty) {
+      _showSnackBar(context, 'Please fill in all fields');
+      return;
+    }
+
+    var priority = selectedPriority;
+
+    var todo = Todo(
+      userId: "defaultUser",
+      title: title,
+      description: description,
+      date: DateFormat('yyyy-MM-dd').format(selectedDate),
+      time: selectedTime.format(context),
+      priority: priority,
+    );
+
+    await dbHelper.insertTodo(todo);
+  }
+
+  void _showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+  }
 }
-var titleController = TextEditingController();
-var descriptionController = TextEditingController();
-var dateController = TextEditingController();
-var timeController = TextEditingController();
-var txtPriority=TextEditingController();
