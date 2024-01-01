@@ -44,17 +44,17 @@ class TodoDetailState extends State<TodoDetail> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Görevi Güncelle'),
+          title: const Text('Görevi Güncelle'),
           content: SingleChildScrollView(
             child: Column(
               children: <Widget>[
                 TextField(
                   controller: txtName,
-                  decoration: InputDecoration(labelText: 'Başlık'),
+                  decoration: const InputDecoration(labelText: 'Başlık'),
                 ),
                 TextField(
                   controller: txtDescription,
-                  decoration: InputDecoration(labelText: 'Açıklama'),
+                  decoration: const InputDecoration(labelText: 'Açıklama'),
                 ),
                 GestureDetector(
                   onTap: () async {
@@ -111,20 +111,20 @@ class TodoDetailState extends State<TodoDetail> {
                     });
                   },
                   items: [
-                    DropdownMenuItem(
+                    const DropdownMenuItem(
                       value: 1,
-                      child: Text("Yuksek"),
+                      child:  Text("Yuksek"),
                     ),
-                    DropdownMenuItem(
+                    const DropdownMenuItem(
                       value: 2,
-                      child: Text("Orta"),
+                      child:  Text("Orta"),
                     ),
-                    DropdownMenuItem(
+                    const DropdownMenuItem(
                       value: 3,
-                      child: Text("Dusuk"),
+                      child:  Text("Dusuk"),
                     ),
                   ],
-                  decoration: InputDecoration(labelText: "Oncelik"),
+                  decoration: const InputDecoration(labelText: "Oncelik"),
                 ),
               ],
             ),
@@ -134,14 +134,14 @@ class TodoDetailState extends State<TodoDetail> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('İptal'),
+              child: const Text('İptal'),
             ),
             TextButton(
               onPressed: () {
                 updateTodo();
                 Navigator.of(context).pop();
               },
-              child: Text('Güncelle'),
+              child: const Text('Güncelle'),
             ),
           ],
         );
@@ -200,20 +200,20 @@ class TodoDetailState extends State<TodoDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Detay"),
+        title: const Text("Detay"),
         actions: <Widget>[
           PopupMenuButton<Options>(
             onSelected: selectProcess,
             itemBuilder: (BuildContext context) => <PopupMenuEntry<Options>>[
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: Options.delete,
-                child: Text("Sil"),
+                child:  Text("Sil"),
               ),
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: Options.update,
-                child: Text("Güncelle"),
+                child:  Text("Güncelle"),
               ),
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: Options.complete,
                 child: Text("Tamamlandı"),
               ),
@@ -228,17 +228,17 @@ class TodoDetailState extends State<TodoDetail> {
           children: [
             Text(
               "Başlık: ${todo.title}",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text("Açıklama: ${todo.description}"),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text("Tarih: ${todo.date}"),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text("Saat: ${txtTime.text}"),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text("Öncelik: ${getPriorityText(todo.priority)}"),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             GestureDetector(
               onTap: () {
                 setState(() {
@@ -247,7 +247,7 @@ class TodoDetailState extends State<TodoDetail> {
                 });
               },
               child: Container(
-                padding: EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: completed ? Colors.grey : Colors.green,
                   borderRadius: BorderRadius.circular(8),
@@ -258,8 +258,8 @@ class TodoDetailState extends State<TodoDetail> {
                       completed ? Icons.check : Icons.check_box_outline_blank,
                       color: Colors.white,
                     ),
-                    SizedBox(width: 8),
-                    Text(
+                    const SizedBox(width: 8),
+                    const Text(
                       "Tamamlandı",
                       style: TextStyle(color: Colors.white),
                     ),

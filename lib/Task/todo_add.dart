@@ -34,7 +34,7 @@ class _TodoAddState extends State<TodoAdd> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Yeni görev ekleme"),
+        title: const Text("Yeni görev ekleme"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -51,7 +51,7 @@ class _TodoAddState extends State<TodoAdd> {
                 await addTodo();
                 Navigator.pop(context, true);
               },
-              child: Text("Kaydet"),
+              child: const Text("Kaydet"),
             ),
           ],
         ),
@@ -120,20 +120,20 @@ class _TodoAddState extends State<TodoAdd> {
         });
       },
       items: [
-        DropdownMenuItem(
+        const DropdownMenuItem(
           value: 1,
-          child: Text("Yüksek"),
+          child:  Text("Yüksek"),
         ),
-        DropdownMenuItem(
+        const DropdownMenuItem(
           value: 2,
-          child: Text("Orta"),
+          child:  Text("Orta"),
         ),
-        DropdownMenuItem(
+        const DropdownMenuItem(
           value: 3,
           child: Text("Düşük"),
         ),
       ],
-      decoration: InputDecoration(labelText: "Öncelik"),
+      decoration: const InputDecoration(labelText: "Öncelik"),
     );
   }
 

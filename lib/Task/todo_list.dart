@@ -26,7 +26,7 @@ class _TodoListState extends State<TodoList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("ToDo List"),
+        title: const Text("ToDo List"),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,10 +49,10 @@ class _TodoListState extends State<TodoList> {
                 getTodos();
               }
             },
-            child: Icon(Icons.add),
+            child: const Icon(Icons.add),
             tooltip: "Yeni Bir Task",
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           FloatingActionButton(
             onPressed: () {
               Navigator.push(
@@ -60,7 +60,7 @@ class _TodoListState extends State<TodoList> {
                 MaterialPageRoute(builder: (context) => WeatherPanel()),
               );
             },
-            child: Icon(Icons.wb_sunny),
+            child: const Icon(Icons.wb_sunny),
             tooltip: "Hava Durumu",
           ),
         ],
@@ -75,7 +75,7 @@ class _TodoListState extends State<TodoList> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             onPressed: () {
               setState(() {
                 selectedDay = selectedDay.subtract(Duration(days: 1));
@@ -85,10 +85,10 @@ class _TodoListState extends State<TodoList> {
           ),
           Text(
             DateFormat('yyyy-MM-dd').format(selectedDay),
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           IconButton(
-            icon: Icon(Icons.arrow_forward),
+            icon: const Icon(Icons.arrow_forward),
             onPressed: () {
               setState(() {
                 selectedDay = selectedDay.add(Duration(days: 1));
@@ -97,7 +97,7 @@ class _TodoListState extends State<TodoList> {
             },
           ),
           IconButton(
-            icon: Icon(Icons.sort),
+            icon: const Icon(Icons.sort),
             onPressed: () {
               showSortOptions();
             },
@@ -113,7 +113,7 @@ class _TodoListState extends State<TodoList> {
     return Container(
       color: Colors.grey[700],
       child: selectedDayTodos.isEmpty
-          ? Center(child: Text("Bu tarihe ait bir görev yok."))
+          ? const Center(child: Text("Bu tarihe ait bir görev yok."))
           : ListView.builder(
         itemCount: selectedDayTodos.length,
         itemBuilder: (BuildContext context, int index) {
@@ -133,7 +133,7 @@ class _TodoListState extends State<TodoList> {
           backgroundColor: getColor(todo.priority),
           child: Text(
             todo.id.toString(),
-            style: TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
           ),
         ),
         title: Text(todo.title),
@@ -141,7 +141,7 @@ class _TodoListState extends State<TodoList> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(todo.description),
-            SizedBox(height: 4.0),
+            const SizedBox(height: 4.0),
             Text('Date: ${todo.date}'),
             Text('Time: ${todo.time}'),
           ],
@@ -204,16 +204,16 @@ class _TodoListState extends State<TodoList> {
           child: Wrap(
             children: <Widget>[
               ListTile(
-                leading: Icon(Icons.arrow_upward),
-                title: Text('Öncelik Sırasına Göre Sırala'),
+                leading: const Icon(Icons.arrow_upward),
+                title: const Text('Öncelik Sırasına Göre Sırala'),
                 onTap: () {
                   sortTodosByPriority();
                   Navigator.pop(context);
                 },
               ),
               ListTile(
-                leading: Icon(Icons.access_time),
-                title: Text('Zamana Göre Sırala'),
+                leading: const Icon(Icons.access_time),
+                title: const Text('Zamana Göre Sırala'),
                 onTap: () {
                   sortTodosByTime();
                   Navigator.pop(context);

@@ -16,7 +16,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text("ToDo List")),
+        title: const Center(child: Text("ToDo List")),
       ),
       body: Center(
         child: Padding(
@@ -24,26 +24,26 @@ class LoginScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 'Giriş',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextField(
                 controller: emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'E-mail',
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               TextField(
                 controller: passwordController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Şifre',
                 ),
                 obscureText: true,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () async {
                   final enteredEmail = emailController.text;
@@ -64,14 +64,14 @@ class LoginScreen extends StatelessWidget {
 
                   (context as Element).markNeedsBuild();
                 },
-                child: Text('Giriş Yap'),
+                child: const Text('Giriş Yap'),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(
                 errorMessage,
-                style: TextStyle(color: Colors.red),
+                style: const TextStyle(color: Colors.red),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               TextButton(
                 onPressed: () {
                   Navigator.push(
@@ -81,7 +81,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                   );
                 },
-                child: Text('Hesabınız yoksa kaydolun'),
+                child: const Text('Hesabınız yoksa kaydolun'),
               ),
             ],
           ),
