@@ -5,7 +5,7 @@ import 'package:to_do_mobile_programming/todo_database.dart';
 import 'todo_add.dart';
 import 'todo_detail.dart';
 import 'weather_panel.dart';
-
+import 'notification.dart';
 class TodoList extends StatefulWidget {
   @override
   _TodoListState createState() => _TodoListState();
@@ -19,6 +19,7 @@ class _TodoListState extends State<TodoList> {
   @override
   void initState() {
     super.initState();
+    notificationManager.initialize();
     getTodos();
   }
 
@@ -164,7 +165,7 @@ class _TodoListState extends State<TodoList> {
     final fetchedTodos = await dbHelper.getTodosByEmail("defaultUser");
     setState(() {
       todos = fetchedTodos;
-    });
+    });   checkUncompletedTasksForNotification();
   }
 
   Color getColor(int priority) {
@@ -227,24 +228,28 @@ class _TodoListState extends State<TodoList> {
   }
 
   DateTime addAMPMToDateTime(String time) {
-    final DateTime currentTime = DateTime.now();
     final List<String> parts = time.split(":");
+    int hours = int.parse(parts[0]);
+    int minutes = int.parse(parts[1].replaceAll(RegExp('[^0-9]'), ''));
 
-    if (parts.length == 2) {
-      final int hours = int.parse(parts[0]);
-      final int minutes = int.parse(parts[1]);
 
-      DateTime result = DateTime(
-        currentTime.year,
-        currentTime.month,
-        currentTime.day,
-        hours,
-        minutes,
-      );
+    if (time.toLowerCase().contains('pm') && hours < 12) {
+      hours += 12;
+    } else if (time.toLowerCase().contains('am') && hours == 12) {
+      hours = 0;
+    }
 
-      return result;
-    } else {
-      return currentTime;
+    return DateTime(0, 1, 1, hours, minutes);
+  }
+  void checkUncompletedTasksForNotification() async {
+    try {
+      final uncompletedTasks = todos.where((todo) => !todo.complete && !todo.isPast()).toList();
+
+      for (var todo in uncompletedTasks) {
+        await notificationManager.showNotification(todo);
+      }
+    } catch (e) {
+      print("Error in checkUncompletedTasksForNotification: $e");
     }
   }
 }

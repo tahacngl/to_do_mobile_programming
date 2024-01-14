@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'login.dart';
+import 'package:to_do_mobile_programming/task/notification.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+
+  notificationManager.initialize();
+
   runApp(MyApp());
 }
 
